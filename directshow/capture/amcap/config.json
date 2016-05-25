@@ -1,10 +1,10 @@
 {
    "annie" : {
-      "AudioDevice2" : "@device:cm:{33D9A762-90C8-11D0-BD43-00A0C911CE86}\\wave:{A3BC2805-163E-4C47-8D0E-FD18C666A784}",
-      "CaptureAudio" : "0",
+      "AudioDevice2" : "@device:cm:{33D9A762-90C8-11D0-BD43-00A0C911CE86}\\wave:{39D772A8-7301-479E-BBB2-60E62A304D1B}",
+      "CaptureAudio" : "1",
       "CaptureCC" : "0",
       "CaptureFile" : "",
-      "FrameRate" : "667111",
+      "FrameRate" : "454545",
       "MasterStream" : "1",
       "TimeLimit" : "0",
       "UseFrameRate" : "1",
