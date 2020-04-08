@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LearnDirectX", "LearnDirect
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dintro", "d3dintro\d3dintro.vcxproj", "{FD9DAF06-2CB1-44A1-951D-A2D65AA8A5B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "totwgpg2", "totwgpg2", "{06632B22-3205-4CD1-9623-EA7674C51C30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "000.freakout", "totwgpg2\000.freakout\000.freakout.vcxproj", "{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,9 +35,20 @@ Global
 		{FD9DAF06-2CB1-44A1-951D-A2D65AA8A5B4}.Release|x64.Build.0 = Release|x64
 		{FD9DAF06-2CB1-44A1-951D-A2D65AA8A5B4}.Release|x86.ActiveCfg = Release|Win32
 		{FD9DAF06-2CB1-44A1-951D-A2D65AA8A5B4}.Release|x86.Build.0 = Release|Win32
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Debug|x64.ActiveCfg = Debug|x64
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Debug|x64.Build.0 = Debug|x64
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Debug|x86.ActiveCfg = Debug|Win32
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Debug|x86.Build.0 = Debug|Win32
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Release|x64.ActiveCfg = Release|x64
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Release|x64.Build.0 = Release|x64
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Release|x86.ActiveCfg = Release|Win32
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB53AD92-DC4D-4BB0-AB84-DAA8F867247E} = {06632B22-3205-4CD1-9623-EA7674C51C30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E64DF9E1-B589-4690-B3F8-16AB5A51D560}
