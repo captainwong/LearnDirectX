@@ -50,7 +50,29 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "F:\\dev_windows_samples\\LearnDirectX\\mxygamedev\\002.gdi_sample\\bg.bmp"
+IDB_BG                  BITMAP                  "res\\bg.bmp"
+
+IDB_CHARACTER1          BITMAP                  "res\\character1.bmp"
+
+IDB_CHARACTER2          BITMAP                  "res\\character2.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "res\\icon.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_WAVE1               WAVE                    "res\\±¦Æ¿Ê±´ú1.wav"
 
 #endif    // Chinese (Simplified, PRC) resources
 /////////////////////////////////////////////////////////////////////////////
