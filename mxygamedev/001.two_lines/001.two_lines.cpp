@@ -18,6 +18,14 @@ LPDIRECT3D9 d3d = nullptr;
 LPDIRECT3DDEVICE9 device = nullptr;
 LPDIRECT3DVERTEXBUFFER9 vertexBuff = nullptr;
 
+struct MyVertex {
+	float x, y, z, rhw;
+	unsigned long color;
+};
+
+// flexible vertex format
+#define MY_D3DFVF_VERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
+
 #endif 
 
 constexpr const auto WINDOW_CLASS = L"LEARN_DX";
@@ -26,6 +34,26 @@ constexpr auto WINDOW_WIDTH = 800;
 constexpr auto WINDOW_HEIGHT = 600;
 
 
+bool initObjects()
+{
+	unsigned long color = D3DCOLOR_XRGB(255, 255, 255);
+	MyVertex objs[] = {
+		{WINDOW_WIDTH / 3.f, WINDOW_HEIGHT / 3.f, 0.5f, 1.f, color},
+		{WINDOW_WIDTH / 3.f, WINDOW_HEIGHT * 2.f / 3.f, 0.5f, 1.f, color},
+		{WINDOW_WIDTH * 2.f / 3.f, WINDOW_HEIGHT / 3.f, 0.5f, 1.f, color},
+		{WINDOW_WIDTH * 2.f / 3.f, WINDOW_HEIGHT * 2 / 3.f, 0.5f, 1.f, color},
+	};
+	if (FAILED(device->CreateVertexBuffer(sizeof(objs), 0, MY_D3DFVF_VERTEX, D3DPOOL_DEFAULT, &vertexBuff, nullptr))) {
+		return false;
+	}
+	void* ptr = nullptr;
+	if (FAILED(vertexBuff->Lock(0, sizeof(objs), (void**)&ptr, 0))) {
+		return false;
+	}
+	memcpy(ptr, objs, sizeof(objs));
+	vertexBuff->Unlock();
+	return true;
+}
 
 bool initD3D(HWND hwnd, bool fullScreen)
 {
@@ -48,23 +76,24 @@ bool initD3D(HWND hwnd, bool fullScreen)
 
 	pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	pp.BackBufferFormat = dm.Format;
-	if (FAILED(d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &device))) {
+	if (FAILED(d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &pp, &device))) {
 		return false;
 	}
 
-	return true;
+	return initObjects();
 }
 
-bool initObjects()
-{
-
-}
 
 void render()
 {
 	// clear back buffer
 	device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	device->BeginScene();
+
+	device->SetStreamSource(0, vertexBuff, 0, sizeof(MyVertex));
+	device->SetFVF(MY_D3DFVF_VERTEX);
+	device->DrawPrimitive(D3DPT_LINELIST, 0, 2);
+
 	device->EndScene();
 	device->Present(nullptr, nullptr, nullptr, nullptr);
 }
@@ -79,6 +108,11 @@ void releaseD3D()
 	if (d3d) {
 		d3d->Release();
 		d3d = nullptr;
+	}
+
+	if (vertexBuff) {
+		vertexBuff->Release();
+		vertexBuff = nullptr;
 	}
 }
 
