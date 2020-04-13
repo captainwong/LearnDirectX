@@ -19,6 +19,7 @@ enum class DisplayState {
 	show_ch1,
 	show_ch2_shadow,
 	show_ch2,
+	ds_count,
 };
 
 static const wchar_t* displayStateString(DisplayState ds)
@@ -82,6 +83,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 		break;
 
 	case WM_TIMER:
+		ds = static_cast<DisplayState>(((int)ds + 1) % (int)DisplayState::ds_count);
 		GetClientRect(hwnd, &rc);
 		InvalidateRect(hwnd, &rc, TRUE);
 		break;
@@ -99,82 +101,33 @@ void myPaint(HWND hwnd, HDC dc)
 	wsprintf(text, L"%s - DisplayState: %s", WINDOW_TITLE, displayStateString(ds));
 	SetWindowTextW(hwnd, text);
 
-	switch (ds) {
-	case DisplayState::show_nothing:
-		ds = static_cast<DisplayState>((int)ds + 1);
-		break;
+	HGDIOBJ old = nullptr;
 
-	case DisplayState::show_bg:
-	{
-		auto old = SelectObject(hdc, bg);
+	if (ds >= DisplayState::show_bg) {
+		old = SelectObject(hdc, bg);
 		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
-		SelectObject(hdc, old);
-		ds = static_cast<DisplayState>((int)ds + 1);
-		break;
 	}
 
-	case DisplayState::show_ch1_shadow:
-	{
-		auto old = SelectObject(hdc, bg);
-		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+	if (ds >= DisplayState::show_ch1_shadow) {
 		SelectObject(hdc, ch1);
 		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
-		SelectObject(hdc, old);
-		ds = static_cast<DisplayState>((int)ds + 1);
-		break;
 	}
 
-	case DisplayState::show_ch1:
-	{
-		auto old = SelectObject(hdc, bg);
-		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
-
-		SelectObject(hdc, ch1);
-		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
+	if (ds >= DisplayState::show_ch1) {
 		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
-
-		SelectObject(hdc, old);
-		ds = static_cast<DisplayState>((int)ds + 1);
-		break;
 	}
 
-	case DisplayState::show_ch2_shadow:
-	{
-		auto old = SelectObject(hdc, bg);
-		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
-
-		SelectObject(hdc, ch1);
-		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
-		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
-
+	if (ds >= DisplayState::show_ch2_shadow) {
 		SelectObject(hdc, ch2);
 		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, CH2_BMP_WIDTH / 2, 0, SRCAND);
-
-		SelectObject(hdc, old);
-		ds = static_cast<DisplayState>((int)ds + 1);
-		break;
 	}
 
-	case DisplayState::show_ch2:
-	{
-		auto old = SelectObject(hdc, bg);
-		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
-
-		SelectObject(hdc, ch1);
-		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
-		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
-
-		SelectObject(hdc, ch2);
-		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, CH2_BMP_WIDTH / 2, 0, SRCAND);
+	if (ds >= DisplayState::show_ch2) {
 		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
-
-		SelectObject(hdc, old);
-		ds = DisplayState::show_nothing;
-		break;
 	}
 
-	default:
-		break;
+	if (old) {
+		SelectObject(hdc, old);
 	}
 }
 
