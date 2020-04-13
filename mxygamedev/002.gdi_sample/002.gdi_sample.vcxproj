@@ -141,6 +141,15 @@
   <ItemGroup>
     <ClCompile Include="002.gdi_sample.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="002.gdi_sample.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bg.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

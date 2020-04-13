@@ -1,9 +1,10 @@
 #include <Windows.h>
+#include "resource.h"
 
 constexpr const auto WINDOW_CLASS = L"LEARN_DX";
 constexpr const auto WINDOW_TITLE = L"LearnDX - 002.GDI Sample";
-constexpr auto WINDOW_WIDTH = 800;
-constexpr auto WINDOW_HEIGHT = 600;
+constexpr auto WINDOW_WIDTH = 1280;
+constexpr auto WINDOW_HEIGHT = 720;
 
 HINSTANCE inst = nullptr;
 HBITMAP bmp = nullptr;
@@ -87,7 +88,8 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	UpdateWindow(hwnd);
 	HDC dc = GetDC(hwnd);
 	hdc = CreateCompatibleDC(dc);
-	bmp = (HBITMAP)LoadImageW(nullptr, L"naruto.bmp", IMAGE_BITMAP, WINDOW_WIDTH, WINDOW_HEIGHT, LR_LOADFROMFILE);
+	//bmp = (HBITMAP)LoadImageW(nullptr, L"bg.bmp", IMAGE_BITMAP, WINDOW_WIDTH, WINDOW_HEIGHT, LR_LOADFROMFILE);
+	bmp = (HBITMAP)LoadImageW(hInstance, MAKEINTRESOURCEW(IDB_BITMAP1), IMAGE_BITMAP, WINDOW_WIDTH, WINDOW_HEIGHT, LR_DEFAULTCOLOR);
 	SelectObject(hdc, bmp);
 	myPaint(dc);
 	ReleaseDC(hwnd, dc);
