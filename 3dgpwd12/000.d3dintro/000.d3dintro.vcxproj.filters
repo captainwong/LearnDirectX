@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="BoxApp.cpp" />
+    <ClCompile Include="..\d3d12book\Common\Camera.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\d3dApp.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\d3dUtil.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\DDSTextureLoader.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\GameTimer.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\GeometryGenerator.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\d3d12book\Common\MathHelper.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{48430944-8fd8-4538-9c72-36eb5efd4c84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\d3d12book\Common\Camera.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\d3dApp.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\d3dUtil.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\d3dx12.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\DDSTextureLoader.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\GameTimer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\GeometryGenerator.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\MathHelper.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\d3d12book\Common\UploadBuffer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
