@@ -5,16 +5,21 @@
 #pragma comment(lib, "MSImg32.lib")
 
 constexpr const auto WINDOW_CLASS = L"LEARN_DX";
-constexpr const auto WINDOW_TITLE = L"LearnDX - 006.Game Circle Sample";
-constexpr auto WINDOW_WIDTH = 356;
-constexpr auto WINDOW_HEIGHT = 200;
-constexpr auto BMP_COUNT = 11;
+constexpr const auto WINDOW_TITLE = L"LearnDX - 007.Go Right (Í¸Ã÷¶¯»­) Sample";
+constexpr auto WINDOW_WIDTH = 798;
+constexpr auto WINDOW_HEIGHT = 600;
+constexpr auto SPRITE_ITEM_WIDTH = 60;
+constexpr auto SPRITE_ITEM_COUNT = 8;
+constexpr auto SPRITE_WIDTH = SPRITE_ITEM_WIDTH * SPRITE_ITEM_COUNT;
+constexpr auto SPRITE_HEIGHT = 108;
+constexpr auto SPRITE_Y = WINDOW_HEIGHT - SPRITE_HEIGHT - 150;
+constexpr auto SPRITE_BG_COLOR = RGB(255, 0, 0);
 
 HWND hwndMain = nullptr;
-HDC hdc = nullptr, hdcMem = nullptr;
-HBITMAP bmps[BMP_COUNT] = {};
-int index = 0;
+HDC hdc = nullptr, hdcMem = nullptr, hdcBuff = nullptr;
+HBITMAP bg = nullptr, sprite = nullptr, bgEmpty = nullptr;
 ULONGLONG prevShow = 0;
+int x = 0, index = 0;
 
 ATOM myRegisterClass(HINSTANCE hInstance);
 bool myCreateWindow(HINSTANCE hInstance, int show);
@@ -34,21 +39,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessageW(&msg);
-		} else {
-			auto now = GetTickCount64();
-			if (now - prevShow >= 100) {
-				index = (index + 1) % BMP_COUNT;
-				myPaint(hwndMain);
-			}
+		} else if (GetTickCount64() - prevShow >= 100) {
+			myPaint(hwndMain);
 		}
 	}
 
+	DeleteDC(hdcBuff); hdcBuff = nullptr;
 	DeleteDC(hdcMem); hdcMem = nullptr;
 	ReleaseDC(hwndMain, hdc); hdc = nullptr;
-	for (int i = 0; i < BMP_COUNT; i++) {
-		DeleteObject(bmps[i]);
-	}
-	memset(bmps, 0, sizeof(bmps));
+	DeleteObject(bg); bg = nullptr;
+	DeleteObject(sprite); sprite = nullptr;
 
 	return msg.wParam;
 }
@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 {
 	switch (message) {
-	case WM_DESTROY:
+	case WM_DESTROY:		
 		PostQuitMessage(0);
 		break;
 
@@ -70,12 +70,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 void myPaint(HWND hwnd)
 {
 	wchar_t text[1024];
-	wsprintf(text, L"%s - Bmp Index: %d", WINDOW_TITLE, index);
+	wsprintf(text, L"%s - Sprite Index: %d, x: %d", WINDOW_TITLE, index, x);
 	SetWindowTextW(hwnd, text);
 
-	HGDIOBJ old = SelectObject(hdcMem, bmps[index]);
-	BitBlt(hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcMem, 0, 0, SRCCOPY);
-	SelectObject(hdc, old);
+	HGDIOBJ old = SelectObject(hdcBuff, bg);
+	BitBlt(hdcMem, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcBuff, 0, 0, SRCCOPY);
+	SelectObject(hdcBuff, sprite);
+	TransparentBlt(hdcMem, x, SPRITE_Y, SPRITE_ITEM_WIDTH, SPRITE_HEIGHT,
+				   hdcBuff, index * SPRITE_ITEM_WIDTH, 0, SPRITE_ITEM_WIDTH, SPRITE_HEIGHT, SPRITE_BG_COLOR);
+	SelectObject(hdcBuff, old);
+
+	BitBlt(hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
+		   hdcMem, 0, 0, SRCCOPY);
+
+	index = (index + 1) % SPRITE_ITEM_COUNT;
+
+	x += 10;
+	if (x >= WINDOW_WIDTH) {
+		x = -SPRITE_ITEM_WIDTH;
+	}
 
 	prevShow = GetTickCount64();
 }
@@ -105,16 +118,17 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	if (!hwnd) { return false; }
 	hwndMain = hwnd;
 
-	wchar_t path[1024];
-	for (int i = 0; i < BMP_COUNT; i++) {
-		wsprintf(path, L"./res/%d.bmp", i);
-		bmps[i] = (HBITMAP)LoadImageW(nullptr, path, IMAGE_BITMAP, WINDOW_WIDTH, WINDOW_HEIGHT, LR_DEFAULTCOLOR | LR_LOADFROMFILE);
-	}
+	bg = (HBITMAP)LoadImageW(hInstance, MAKEINTRESOURCEW(IDB_BG), IMAGE_BITMAP, WINDOW_WIDTH, WINDOW_HEIGHT, LR_DEFAULTCOLOR);
+	sprite = (HBITMAP)LoadImageW(hInstance, MAKEINTRESOURCEW(IDB_SPRITE), IMAGE_BITMAP, SPRITE_WIDTH, SPRITE_HEIGHT, LR_DEFAULTCOLOR);
 
 	ShowWindow(hwnd, show);
 	UpdateWindow(hwnd);
 	hdc = GetDC(hwnd);
 	hdcMem = CreateCompatibleDC(hdc);
+	hdcBuff = CreateCompatibleDC(hdc);
+	bgEmpty = CreateCompatibleBitmap(hdc, WINDOW_WIDTH, WINDOW_HEIGHT);
+	SelectObject(hdcMem, bgEmpty);
+
 	myPaint(hwnd);
 
 	PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstance, SND_RESOURCE | SND_ASYNC | SND_LOOP);
