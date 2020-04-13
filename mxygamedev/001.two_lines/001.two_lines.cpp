@@ -16,11 +16,12 @@
 
 LPDIRECT3D9 d3d = nullptr;
 LPDIRECT3DDEVICE9 device = nullptr;
+LPDIRECT3DVERTEXBUFFER9 vertexBuff = nullptr;
 
 #endif 
 
 constexpr const auto WINDOW_CLASS = L"LEARN_DX";
-constexpr const auto WINDOW_TITLE = L"LearnDX - 000.Blanking Window";
+constexpr const auto WINDOW_TITLE = L"LearnDX - 001.Two Lines";
 constexpr auto WINDOW_WIDTH = 800;
 constexpr auto WINDOW_HEIGHT = 600;
 
@@ -52,6 +53,11 @@ bool initD3D(HWND hwnd, bool fullScreen)
 	}
 
 	return true;
+}
+
+bool initObjects()
+{
+
 }
 
 void render()
@@ -94,7 +100,7 @@ LRESULT WINAPI WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevhInst, LPSTR cmdLine, int show)
 {
-	WNDCLASSEX wc = { 
+	WNDCLASSEX wc = {
 		sizeof(WNDCLASSEX), // UINT        cbSize;
 		CS_CLASSDC,			// UINT        style;
 		WndProc,			// WNDPROC     lpfnWndProc;
@@ -113,10 +119,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevhInst, LPSTR cmdLine, int show
 		return 1;
 	}
 
-	HWND hwnd = CreateWindow(WINDOW_CLASS, WINDOW_TITLE, 
-							 WS_OVERLAPPEDWINDOW, 
-							 CW_USEDEFAULT, CW_USEDEFAULT, 
-							 WINDOW_WIDTH, WINDOW_HEIGHT, 
+	HWND hwnd = CreateWindow(WINDOW_CLASS, WINDOW_TITLE,
+							 WS_OVERLAPPEDWINDOW,
+							 CW_USEDEFAULT, CW_USEDEFAULT,
+							 WINDOW_WIDTH, WINDOW_HEIGHT,
 							 GetDesktopWindow(), nullptr, hInst, nullptr);
 	if (!hwnd) { return 1; }
 	if (!initD3D(hwnd, false)) {
