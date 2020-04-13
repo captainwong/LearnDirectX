@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "006.game_circle", "mxygamed
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "007.go_right", "mxygamedev\007.go_right\007.go_right.vcxproj", "{9E21B104-D14C-4CE2-8345-66DC8A996D12}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "008.go_random_direction", "mxygamedev\008.go_random_direction\008.go_random_direction.vcxproj", "{00259302-BCA8-4013-A1C1-6C5EE5E5138E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -149,6 +151,14 @@ Global
 		{9E21B104-D14C-4CE2-8345-66DC8A996D12}.Release|x64.Build.0 = Release|x64
 		{9E21B104-D14C-4CE2-8345-66DC8A996D12}.Release|x86.ActiveCfg = Release|Win32
 		{9E21B104-D14C-4CE2-8345-66DC8A996D12}.Release|x86.Build.0 = Release|Win32
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Debug|x64.ActiveCfg = Debug|x64
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Debug|x64.Build.0 = Debug|x64
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Debug|x86.ActiveCfg = Debug|Win32
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Debug|x86.Build.0 = Debug|Win32
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Release|x64.ActiveCfg = Release|x64
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Release|x64.Build.0 = Release|x64
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Release|x86.ActiveCfg = Release|Win32
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +177,7 @@ Global
 		{53848BA6-9BCF-46FF-83A0-4290E03E744D} = {409F011D-BF36-4899-8113-802897843DBE}
 		{C501F30E-48F0-4111-A0B6-BEA5685A2CAE} = {409F011D-BF36-4899-8113-802897843DBE}
 		{9E21B104-D14C-4CE2-8345-66DC8A996D12} = {409F011D-BF36-4899-8113-802897843DBE}
+		{00259302-BCA8-4013-A1C1-6C5EE5E5138E} = {409F011D-BF36-4899-8113-802897843DBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E64DF9E1-B589-4690-B3F8-16AB5A51D560}
