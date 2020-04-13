@@ -12,13 +12,36 @@ constexpr auto CH1_BMP_HEIGHT = 579;
 constexpr auto CH2_BMP_WIDTH = 800;
 constexpr auto CH2_BMP_HEIGHT = 584;
 
+enum class DisplayState {
+	show_nothing,
+	show_bg,
+	show_ch1_shadow,
+	show_ch1,
+	show_ch2_shadow,
+	show_ch2,
+};
+
+static const wchar_t* displayStateString(DisplayState ds)
+{
+	switch (ds) {
+	case DisplayState::show_nothing: return L"show_nothing";
+	case DisplayState::show_bg:return L"show_bg";
+	case DisplayState::show_ch1_shadow:return L"show_ch1_shadow";
+	case DisplayState::show_ch1:return L"show_ch1";
+	case DisplayState::show_ch2_shadow:return L"show_ch2_shadow";
+	case DisplayState::show_ch2:return L"show_ch2";
+	default:return L"";
+	}
+}
+
 HDC hdc = nullptr;
 HBITMAP bg = nullptr, ch1 = nullptr, ch2 = nullptr;
+DisplayState ds = DisplayState::show_nothing;
 
 ATOM myRegisterClass(HINSTANCE hInstance);
 bool myCreateWindow(HINSTANCE hInstance, int show);
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
-void myPaint(HDC dc);
+void myPaint(HWND hwnd, HDC dc);
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
@@ -41,10 +64,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 {
 	PAINTSTRUCT ps;
 	HDC dc;
+	RECT rc;
+
 	switch (message) {
 	case WM_PAINT:
 		dc = BeginPaint(hwnd, &ps);
-		myPaint(dc);
+		myPaint(hwnd, dc);
 		EndPaint(hwnd, &ps);
 		break;
 
@@ -56,6 +81,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 		PostQuitMessage(0);
 		break;
 
+	case WM_TIMER:
+		GetClientRect(hwnd, &rc);
+		InvalidateRect(hwnd, &rc, TRUE);
+		break;
+
 	default:
 		return DefWindowProcW(hwnd, message, wp, lp);
 	}
@@ -63,22 +93,89 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 	return 0;
 }
 
-void myPaint(HDC dc)
+void myPaint(HWND hwnd, HDC dc)
 {
-	// 角色图片为左右均分
+	wchar_t text[1024];
+	wsprintf(text, L"%s - DisplayState: %s", WINDOW_TITLE, displayStateString(ds));
+	SetWindowTextW(hwnd, text);
 
-	auto old = SelectObject(hdc, bg);
-	BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+	switch (ds) {
+	case DisplayState::show_nothing:
+		ds = static_cast<DisplayState>((int)ds + 1);
+		break;
 
-	SelectObject(hdc, ch1);
-	BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
-	BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+	case DisplayState::show_bg:
+	{
+		auto old = SelectObject(hdc, bg);
+		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+		SelectObject(hdc, old);
+		ds = static_cast<DisplayState>((int)ds + 1);
+		break;
+	}
 
-	SelectObject(hdc, ch2);
-	BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, CH2_BMP_WIDTH / 2, 0, SRCAND);
-	BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+	case DisplayState::show_ch1_shadow:
+	{
+		auto old = SelectObject(hdc, bg);
+		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+		SelectObject(hdc, ch1);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
+		SelectObject(hdc, old);
+		ds = static_cast<DisplayState>((int)ds + 1);
+		break;
+	}
 
-	SelectObject(hdc, old);
+	case DisplayState::show_ch1:
+	{
+		auto old = SelectObject(hdc, bg);
+		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+
+		SelectObject(hdc, ch1);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+
+		SelectObject(hdc, old);
+		ds = static_cast<DisplayState>((int)ds + 1);
+		break;
+	}
+
+	case DisplayState::show_ch2_shadow:
+	{
+		auto old = SelectObject(hdc, bg);
+		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+
+		SelectObject(hdc, ch1);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+
+		SelectObject(hdc, ch2);
+		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, CH2_BMP_WIDTH / 2, 0, SRCAND);
+
+		SelectObject(hdc, old);
+		ds = static_cast<DisplayState>((int)ds + 1);
+		break;
+	}
+
+	case DisplayState::show_ch2:
+	{
+		auto old = SelectObject(hdc, bg);
+		BitBlt(dc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdc, 0, 0, SRCCOPY);
+
+		SelectObject(hdc, ch1);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, CH1_BMP_WIDTH / 2, 0, SRCAND);
+		BitBlt(dc, 50, WINDOW_HEIGHT - CH1_BMP_HEIGHT - 50, CH1_BMP_WIDTH / 2, CH1_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+
+		SelectObject(hdc, ch2);
+		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, CH2_BMP_WIDTH / 2, 0, SRCAND);
+		BitBlt(dc, WINDOW_WIDTH / 2 + 50, WINDOW_HEIGHT - CH2_BMP_HEIGHT - 50, CH2_BMP_WIDTH / 2, CH2_BMP_HEIGHT, hdc, 0, 0, SRCPAINT);
+
+		SelectObject(hdc, old);
+		ds = DisplayState::show_nothing;
+		break;
+	}
+
+	default:
+		break;
+	}
 }
 
 ATOM myRegisterClass(HINSTANCE hInstance)
@@ -92,7 +189,7 @@ ATOM myRegisterClass(HINSTANCE hInstance)
 	wc.hInstance = hInstance;
 	wc.hIcon = (HICON)LoadImageW(hInstance, MAKEINTRESOURCEW(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
 	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = WINDOW_CLASS;
 	wc.hIconSm = nullptr;
@@ -113,10 +210,11 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	UpdateWindow(hwnd);
 	HDC dc = GetDC(hwnd);
 	hdc = CreateCompatibleDC(dc);
-	myPaint(dc);
 	ReleaseDC(hwnd, dc);
 
 	PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstance, SND_RESOURCE | SND_ASYNC | SND_LOOP);
+
+	SetTimer(hwnd, 1, 1500, nullptr);
 
 	return true;
 }
