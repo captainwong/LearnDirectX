@@ -72,6 +72,8 @@ IDI_ICON1               ICON                    "res\\icon.ico"
 
 IDR_WAVE1               WAVE                    "res\\¥«¥Ö¥é˜äÁÖ.wav"
 
+IDR_WAVE2               WAVE                    "res\\collision.wav"
+
 #endif    // Chinese (Simplified, PRC) resources
 /////////////////////////////////////////////////////////////////////////////
 

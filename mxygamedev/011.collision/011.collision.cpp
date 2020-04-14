@@ -25,6 +25,7 @@ struct Bird {
 	int ys = BIRD_Y_SPEED;
 };
 
+HINSTANCE hInstMain = nullptr;
 HWND hwndMain = nullptr;
 HDC hdc = nullptr, hdcMem = nullptr, hdcBuf = nullptr;
 HBITMAP bg = nullptr, bgEmpty = nullptr, bmpBird = nullptr;
@@ -144,6 +145,7 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	HWND hwnd = CreateWindow(WINDOW_CLASS, WINDOW_TITLE, WS_OVERLAPPEDWINDOW,
 							 CW_USEDEFAULT, CW_USEDEFAULT, WINDOW_WIDTH, WINDOW_HEIGHT, nullptr, nullptr, hInstance, nullptr);
 	if (!hwnd) { return false; }
+	hInstMain = hInstance;
 	hwndMain = hwnd;
 	PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstance, SND_RESOURCE | SND_ASYNC | SND_LOOP);
 
@@ -198,21 +200,31 @@ void myPaint(HWND hwnd)
 
 void moveBird()
 {
+	bool collide = false;
+
 	bird.x += bird.xs;
 	if (bird.x < 0) {
 		bird.x = 0;
 		bird.xs = -bird.xs;
+		collide = true;
 	} else if (bird.x >= rc.right - BIRD_ITEM_SIZE) {
 		bird.x = rc.right - BIRD_ITEM_SIZE;
 		bird.xs = -bird.xs;
+		collide = true;
 	}
 
 	bird.y += bird.ys;
 	if (bird.y < 0) {
 		bird.y = 0;
 		bird.ys = -bird.ys;
+		collide = true;
 	} else if (bird.y >= rc.bottom - BIRD_ITEM_SIZE) {
 		bird.y = rc.bottom - BIRD_ITEM_SIZE;
 		bird.ys = -bird.ys;
+		collide = true;
+	}
+
+	if (collide) {
+		PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE2), hInstMain, SND_RESOURCE | SND_ASYNC);
 	}
 }
