@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 	DeleteObject(bgEmpty); bgEmpty = nullptr;
 	DeleteObject(bmpSwordman); bmpSwordman = nullptr;
 	DeleteObject(bmpSwordblade); bmpSwordblade = nullptr;
-
+	ShowCursor(TRUE);
 
 	return msg.wParam;
 }
