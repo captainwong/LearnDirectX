@@ -1,5 +1,6 @@
 #define NOMINMAX
 #include <Windows.h>
+#include <mmsystem.h>
 #include "resource.h"
 #include <algorithm>
 
@@ -50,6 +51,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 		return 1;
 	}
 
+	mciSendStringW(L"open ./res/¥«¥Ö¥é˜äÁÖ.wav alias bgm", NULL, 0, NULL);
+	mciSendStringW(L"play bgm", NULL, 0, NULL);
+
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -60,6 +64,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 		}
 	}
 
+	mciSendStringW(L"stop bgm", NULL, 0, NULL);
+
 	DeleteDC(hdcBuf); hdcBuf = nullptr;
 	DeleteDC(hdcMem); hdcMem = nullptr;
 	ReleaseDC(hwndMain, hdc); hdc = nullptr;
@@ -67,6 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 	DeleteObject(bgEmpty); bgEmpty = nullptr;
 	DeleteObject(bmpBird); bmpBird = nullptr;
 	ShowCursor(TRUE);
+
 
 	return msg.wParam;
 }
@@ -147,7 +154,6 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	if (!hwnd) { return false; }
 	hInstMain = hInstance;
 	hwndMain = hwnd;
-	PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstance, SND_RESOURCE | SND_ASYNC | SND_LOOP);
 
 	ShowWindow(hwnd, show);
 	UpdateWindow(hwnd);
