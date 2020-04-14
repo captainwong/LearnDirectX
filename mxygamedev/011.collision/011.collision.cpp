@@ -32,13 +32,15 @@ ULONGLONG prevShow = 0;
 int index = 0;
 Bird bird{};
 RECT rc{0};
+bool paused = false;
+bool stepMode = false;
 
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
 ATOM myRegisterClass(HINSTANCE hInstance);
 bool myCreateWindow(HINSTANCE hInstance, int show);
 void myPaint(HWND hwnd);
-
+void moveBird();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 {
@@ -93,6 +95,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 			if (bird.xs == 0) { bird.xs = BIRD_X_SPEED; } else { bird.xs *= 1.5; }
 			break;
 
+		case 'P':
+			stepMode = paused = !paused;
+			break;
+
+		case VK_SPACE:
+			if (stepMode) {
+				moveBird();
+			}			
+			break;
 		}
 		break;
 
@@ -159,8 +170,8 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 void myPaint(HWND hwnd)
 {
 	wchar_t text[1024];
-	wsprintf(text, L"%s - bird: %d, %d, speed: %d, %d",
-			 WINDOW_TITLE, bird.x, bird.y, bird.xs, bird.ys);
+	wsprintf(text, L"%s - bird: %d, %d, speed: %d, %d%s%s",
+			 WINDOW_TITLE, bird.x, bird.y, bird.xs, bird.ys, paused ? L", paused" : L"", stepMode ? L", stepMode" : L"");
 	SetWindowTextW(hwnd, text);
 
 	// draw rolling background
@@ -178,6 +189,15 @@ void myPaint(HWND hwnd)
 	BitBlt(hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
 		   hdcMem, 0, 0, SRCCOPY);
 
+	if (!paused) {
+		moveBird();
+	}
+
+	prevShow = GetTickCount64();
+}
+
+void moveBird()
+{
 	bird.x += bird.xs;
 	if (bird.x < 0) {
 		bird.x = 0;
@@ -195,6 +215,4 @@ void myPaint(HWND hwnd)
 		bird.y = rc.bottom - BIRD_ITEM_SIZE;
 		bird.ys = -bird.ys;
 	}
-
-	prevShow = GetTickCount64();
 }
