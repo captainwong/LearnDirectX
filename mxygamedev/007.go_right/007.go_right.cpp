@@ -16,7 +16,7 @@ constexpr auto SPRITE_Y = WINDOW_HEIGHT - SPRITE_HEIGHT - 150;
 constexpr auto SPRITE_BG_COLOR = RGB(255, 0, 0);
 
 HWND hwndMain = nullptr;
-HDC hdc = nullptr, hdcMem = nullptr, hdcBuff = nullptr;
+HDC hdc = nullptr, hdcMem = nullptr, hdcBuf = nullptr;
 HBITMAP bg = nullptr, sprite = nullptr, bgEmpty = nullptr;
 ULONGLONG prevShow = 0;
 int x = 0, index = 0;
@@ -44,7 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 		}
 	}
 
-	DeleteDC(hdcBuff); hdcBuff = nullptr;
+	DeleteDC(hdcBuf); hdcBuf = nullptr;
 	DeleteDC(hdcMem); hdcMem = nullptr;
 	ReleaseDC(hwndMain, hdc); hdc = nullptr;
 	DeleteObject(bg); bg = nullptr;
@@ -73,12 +73,12 @@ void myPaint(HWND hwnd)
 	wsprintf(text, L"%s - Sprite Index: %d, x: %d", WINDOW_TITLE, index, x);
 	SetWindowTextW(hwnd, text);
 
-	HGDIOBJ old = SelectObject(hdcBuff, bg);
-	BitBlt(hdcMem, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcBuff, 0, 0, SRCCOPY);
-	SelectObject(hdcBuff, sprite);
+	HGDIOBJ old = SelectObject(hdcBuf, bg);
+	BitBlt(hdcMem, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcBuf, 0, 0, SRCCOPY);
+	SelectObject(hdcBuf, sprite);
 	TransparentBlt(hdcMem, x, SPRITE_Y, SPRITE_ITEM_WIDTH, SPRITE_HEIGHT,
-				   hdcBuff, index * SPRITE_ITEM_WIDTH, 0, SPRITE_ITEM_WIDTH, SPRITE_HEIGHT, SPRITE_BG_COLOR);
-	SelectObject(hdcBuff, old);
+				   hdcBuf, index * SPRITE_ITEM_WIDTH, 0, SPRITE_ITEM_WIDTH, SPRITE_HEIGHT, SPRITE_BG_COLOR);
+	SelectObject(hdcBuf, old);
 
 	BitBlt(hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
 		   hdcMem, 0, 0, SRCCOPY);
@@ -125,7 +125,7 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	UpdateWindow(hwnd);
 	hdc = GetDC(hwnd);
 	hdcMem = CreateCompatibleDC(hdc);
-	hdcBuff = CreateCompatibleDC(hdc);
+	hdcBuf = CreateCompatibleDC(hdc);
 	bgEmpty = CreateCompatibleBitmap(hdc, WINDOW_WIDTH, WINDOW_HEIGHT);
 	SelectObject(hdcMem, bgEmpty);
 

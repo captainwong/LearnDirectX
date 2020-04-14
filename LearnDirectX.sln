@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "008.go_random_direction", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "009.go_with_keypress", "mxygamedev\009.go_with_keypress\009.go_with_keypress.vcxproj", "{87036A59-E8B2-44C3-9A9E-11D605216896}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "010.go_with_mouse", "mxygamedev\010.go_with_mouse\010.go_with_mouse.vcxproj", "{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -169,6 +171,14 @@ Global
 		{87036A59-E8B2-44C3-9A9E-11D605216896}.Release|x64.Build.0 = Release|x64
 		{87036A59-E8B2-44C3-9A9E-11D605216896}.Release|x86.ActiveCfg = Release|Win32
 		{87036A59-E8B2-44C3-9A9E-11D605216896}.Release|x86.Build.0 = Release|Win32
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Debug|x64.ActiveCfg = Debug|x64
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Debug|x64.Build.0 = Debug|x64
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Debug|x86.ActiveCfg = Debug|Win32
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Debug|x86.Build.0 = Debug|Win32
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Release|x64.ActiveCfg = Release|x64
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Release|x64.Build.0 = Release|x64
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Release|x86.ActiveCfg = Release|Win32
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +199,7 @@ Global
 		{9E21B104-D14C-4CE2-8345-66DC8A996D12} = {409F011D-BF36-4899-8113-802897843DBE}
 		{00259302-BCA8-4013-A1C1-6C5EE5E5138E} = {409F011D-BF36-4899-8113-802897843DBE}
 		{87036A59-E8B2-44C3-9A9E-11D605216896} = {409F011D-BF36-4899-8113-802897843DBE}
+		{71941251-2CDD-49DE-8DD6-A8B6DE3B113F} = {409F011D-BF36-4899-8113-802897843DBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E64DF9E1-B589-4690-B3F8-16AB5A51D560}
