@@ -12,21 +12,22 @@ using std::max;
 #pragma comment(lib, "MSImg32.lib")
 
 constexpr const auto WINDOW_CLASS = L"LEARN_DX";
-constexpr const auto WINDOW_TITLE = L"LearnDX - 012.Gravity Sample";
+constexpr const auto WINDOW_TITLE = L"LearnDX - 012.Gravity & Friction Sample";
 constexpr auto WINDOW_WIDTH = 1280;
 constexpr auto WINDOW_HEIGHT = 720;
 constexpr auto BIRD_ITEM_SIZE = 50;
 constexpr auto BIRD_WIDTH = BIRD_ITEM_SIZE * 2;
-constexpr auto BIRD_X_SPEED = 5;
+constexpr auto BIRD_X_SPEED = 50;
 constexpr auto BIRD_Y_SPEED = 5;
 constexpr auto GRAVITY = 3;
-constexpr auto COLLIDE_PARAM = 0.9; // 碰撞时损失10%的速度
+constexpr auto COLLIDE_PARAM = 0.8; // 碰撞时损失20%速度
+constexpr auto FRICTION_PARAM = 0.1; // 每次绘制时因为摩擦力损失1个单位速度
 
 struct Bird {
-	int x = (WINDOW_WIDTH - BIRD_ITEM_SIZE) / 2;
-	int y = (WINDOW_HEIGHT - BIRD_ITEM_SIZE) / 2;
-	int xs = BIRD_X_SPEED;
-	int ys = 0;
+	int x = BIRD_ITEM_SIZE;
+	int y = BIRD_ITEM_SIZE;
+	float xs = BIRD_X_SPEED;
+	float ys = 0;
 };
 
 HINSTANCE hInstMain = nullptr;
@@ -100,11 +101,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp)
 			break;
 
 		case VK_LEFT:
-			bird.xs--;
+			bird.xs -= 50;
 			break;
 
 		case VK_RIGHT:
-			bird.xs++;
+			bird.xs += 50;
 			break;
 
 		case 'P':
@@ -190,7 +191,7 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 void myPaint(HWND hwnd)
 {
 	wchar_t text[1024];
-	wsprintf(text, L"%s - bird: %d, %d, speed: %d, %d, gravity: %d%s%s",
+	swprintf_s(text, L"%s - bird: %d, %d, speed: %.2f %.2f, gravity: %d%s%s",
 			 WINDOW_TITLE, bird.x, bird.y, bird.xs, bird.ys, gravity, paused ? L", paused" : L"", stepMode ? L", stepMode" : L"");
 	SetWindowTextW(hwnd, text);
 
@@ -219,29 +220,47 @@ void myPaint(HWND hwnd)
 void moveBird()
 {
 	bool collide = false;
-
+	if (bird.xs > 0) {
+		bird.xs -= FRICTION_PARAM;
+	} else if (bird.xs < 0) {
+		bird.xs += FRICTION_PARAM;
+	}
+	if (abs(bird.xs) <= 1) {
+		bird.xs = 0;
+	}
 	bird.x += bird.xs;
 	if (bird.x < 0) {
 		bird.x = 0;
-		bird.xs = -bird.xs;
+		bird.xs = -bird.xs * COLLIDE_PARAM;
 		collide = true;
 	} else if (bird.x >= rc.right - BIRD_ITEM_SIZE) {
 		bird.x = rc.right - BIRD_ITEM_SIZE;
-		bird.xs = -bird.xs;
+		bird.xs = -bird.xs * COLLIDE_PARAM;
 		collide = true;
 	}
 
 	bird.ys += gravity;
+	if (bird.ys > 0) {
+		bird.ys -= FRICTION_PARAM;
+	} else if (bird.ys < 0) {
+		bird.ys += FRICTION_PARAM;
+	}
 	bird.y += bird.ys;
 	if (bird.y < 0) {
 		bird.y = 0;
 		bird.ys = -bird.ys * COLLIDE_PARAM;
 		collide = true;
-	} else if (bird.y >= rc.bottom - BIRD_ITEM_SIZE) {
+	} else if (bird.y == rc.bottom - BIRD_ITEM_SIZE) {
+		
+	} else if (bird.y > rc.bottom - BIRD_ITEM_SIZE - 1) {
 		bird.y = rc.bottom - BIRD_ITEM_SIZE;
 		bird.ys = -bird.ys * COLLIDE_PARAM;
+		if (abs(bird.ys) < gravity) {
+			bird.ys = 0;
+		}
 		collide = true;
 	}
+	
 
 	if (collide) {
 		PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstMain, SND_RESOURCE | SND_ASYNC);
