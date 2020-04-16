@@ -52,9 +52,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 		return 1;
 	}
 
-	mciSendStringW(L"open ./res/¥Ó¥ë¥¸ºþ.wav alias bgm", NULL, 0, NULL);
-	mciSendStringW(L"play bgm", NULL, 0, NULL);
-
 	MSG msg = { 0 };
 	while (msg.message != WM_QUIT) {
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -64,8 +61,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 			myPaint(hwndMain);
 		}
 	}
-
-	mciSendStringW(L"stop bgm", NULL, 0, NULL);
 
 	DeleteDC(hdcBuf); hdcBuf = nullptr;
 	DeleteDC(hdcMem); hdcMem = nullptr;
@@ -176,6 +171,7 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 
 	myPaint(hwnd);
 
+	PlaySoundW(MAKEINTRESOURCEW(IDR_WAVE1), hInstMain, SND_RESOURCE | SND_ASYNC | SND_LOOP);
 
 	return true;
 }
