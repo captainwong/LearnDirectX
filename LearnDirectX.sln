@@ -51,6 +51,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "013.particle_snowflake", "m
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "014.particle_star", "mxygamedev\014.particle_star\014.particle_star.vcxproj", "{9F6C5C9F-16F7-40E3-87EA-8D1826268D3D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "015.battle", "mxygamedev\015.battle\015.battle.vcxproj", "{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -219,6 +221,14 @@ Global
 		{9F6C5C9F-16F7-40E3-87EA-8D1826268D3D}.Release|x64.Build.0 = Release|x64
 		{9F6C5C9F-16F7-40E3-87EA-8D1826268D3D}.Release|x86.ActiveCfg = Release|Win32
 		{9F6C5C9F-16F7-40E3-87EA-8D1826268D3D}.Release|x86.Build.0 = Release|Win32
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Debug|x64.ActiveCfg = Debug|x64
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Debug|x64.Build.0 = Debug|x64
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Debug|x86.ActiveCfg = Debug|Win32
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Debug|x86.Build.0 = Debug|Win32
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Release|x64.ActiveCfg = Release|x64
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Release|x64.Build.0 = Release|x64
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Release|x86.ActiveCfg = Release|Win32
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,6 +254,7 @@ Global
 		{4B5B7F76-4DE5-4B85-B6E4-BDAD7468D761} = {409F011D-BF36-4899-8113-802897843DBE}
 		{EBF95994-8D52-4594-8693-521D633B2AEC} = {409F011D-BF36-4899-8113-802897843DBE}
 		{9F6C5C9F-16F7-40E3-87EA-8D1826268D3D} = {409F011D-BF36-4899-8113-802897843DBE}
+		{43080FF9-5BEB-4E7C-973A-F3BCCE17AC25} = {409F011D-BF36-4899-8113-802897843DBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E64DF9E1-B589-4690-B3F8-16AB5A51D560}

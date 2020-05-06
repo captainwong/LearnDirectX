@@ -1,10 +1,12 @@
 #define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <mmsystem.h>
-#include "resource.h"
 #include <algorithm>
 #include <math.h>
 #include <list>
+#include <time.h>
+#include "resource.h"
 
 using std::min;
 using std::max;
@@ -43,7 +45,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wp, LPARAM lp);
 ATOM myRegisterClass(HINSTANCE hInstance);
 bool myCreateWindow(HINSTANCE hInstance, int show);
 void myPaint(HWND hwnd);
-void step();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 {
@@ -168,6 +169,7 @@ bool myCreateWindow(HINSTANCE hInstance, int show)
 	bmpSnow = (HBITMAP)LoadImageW(hInstance, MAKEINTRESOURCEW(IDB_SNOW), IMAGE_BITMAP, SNOW_SIZE, SNOW_SIZE, LR_DEFAULTCOLOR);
 
 	GetClientRect(hwnd, &rc);
+	srand((unsigned int)time(nullptr));
 
 	myPaint(hwnd);
 
