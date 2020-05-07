@@ -180,6 +180,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int show)
 	DeleteObject(bgEmpty); bgEmpty = nullptr;
 	DeleteObject(bmpSnow); bmpSnow = nullptr;
 
+	game.releaseRes();
+
 	return msg.wParam;
 }
 
