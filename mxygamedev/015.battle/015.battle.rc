@@ -80,6 +80,10 @@ IDB_SNOW                BITMAP                  "res\\snow.bmp"
 
 IDB_VICTORY             BITMAP                  "res\\victory.bmp"
 
+IDB_HERO_MAGIC          BITMAP                  "res\\heromagic.bmp"
+
+IDB_MONSTER_MAGIC       BITMAP                  "res\\monstermagic.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

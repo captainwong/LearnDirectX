@@ -78,6 +78,12 @@
     <Image Include="res\icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\heromagic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\monstermagic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\failure.wav">

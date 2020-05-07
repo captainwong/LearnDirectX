@@ -153,10 +153,12 @@
     <Image Include="res\gameover.bmp" />
     <Image Include="res\hero.bmp" />
     <Image Include="res\herocritical.bmp" />
+    <Image Include="res\heromagic.bmp" />
     <Image Include="res\heroslash.bmp" />
     <Image Include="res\icon.ico" />
     <Image Include="res\monster.bmp" />
     <Image Include="res\monstercritical.bmp" />
+    <Image Include="res\monstermagic.bmp" />
     <Image Include="res\monsterslash.bmp" />
     <Image Include="res\recover.bmp" />
     <Image Include="res\skillbutton1.bmp" />

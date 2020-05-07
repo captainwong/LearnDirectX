@@ -21,12 +21,15 @@
 #define IDB_SKILL4                      113
 #define IDB_SNOW                        114
 #define IDB_VICTORY                     115
+#define IDB_HERO_MAGIC                  116
+#define IDB_BITMAP1                     117
+#define IDB_MONSTER_MAGIC               117
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_RESOURCE_VALUE        118
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

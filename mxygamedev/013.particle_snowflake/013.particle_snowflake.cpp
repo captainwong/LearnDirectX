@@ -185,7 +185,6 @@ void myPaint(HWND hwnd)
 			   WINDOW_TITLE, snowCount, snowXs, snowYs);
 	SetWindowTextW(hwnd, text);
 
-	// draw rolling background
 	HGDIOBJ old = SelectObject(hdcBuf, bg);
 	BitBlt(hdcMem, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcBuf, 0, 0, SRCCOPY);
 

@@ -182,7 +182,7 @@ void myPaint(HWND hwnd)
 			 WINDOW_TITLE, bird.x, bird.y, bird.xs, bird.ys, paused ? L", paused" : L"", stepMode ? L", stepMode" : L"");
 	SetWindowTextW(hwnd, text);
 
-	// draw rolling background
+	// draw background
 	HGDIOBJ old = SelectObject(hdcBuf, bg);
 	BitBlt(hdcMem, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcBuf, 0, 0, SRCCOPY);
 
